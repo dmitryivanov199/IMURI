@@ -75,12 +75,7 @@ void Md5::initializeMdBuffer() {
 
 void Md5::processMessage() {
     initializeT();
-
-    uint32_t AA;
-    uint32_t BB;
-    uint32_t CC;
-    uint32_t DD;
-
+    uint32_t AA, BB, CC, DD;
     auto *X = (uint32_t *) (appendedData);
 
     for (size_t i = 0; i < sizeAfterAppendingInBytes / 4; i += 16) {
@@ -89,10 +84,10 @@ void Md5::processMessage() {
         CC = C;
         DD = D;
 
-        runRound1(i, X);
-        runRound2(i, X);
-        runRound3(i, X);
-        runRound4(i, X);
+        runStage1(i, X);
+        runStage2(i, X);
+        runStage3(i, X);
+        runStage4(i, X);
 
         A += AA;
         B += BB;
@@ -110,7 +105,7 @@ void Md5::initializeT() {
     }
 }
 
-void Md5::runRound1(size_t i, const uint32_t *X) {
+void Md5::runStage1(size_t i, const uint32_t *X) {
     A = B + rotateLeft((A + calculateF(B, C, D) + X[i + 0] + T.at(0)), 7);
     D = A + rotateLeft((D + calculateF(A, B, C) + X[i + 1] + T.at(1)), 12);
     C = D + rotateLeft((C + calculateF(D, A, B) + X[i + 2] + T.at(2)), 17);
@@ -132,7 +127,7 @@ void Md5::runRound1(size_t i, const uint32_t *X) {
     B = C + rotateLeft((B + calculateF(C, D, A) + X[i + 15] + T.at(15)), 22);
 }
 
-void Md5::runRound2(size_t i, const uint32_t *X) {
+void Md5::runStage2(size_t i, const uint32_t *X) {
     A = B + rotateLeft((A + calculateG(B, C, D) + X[i + 1] + T.at(16)), 5);
     D = A + rotateLeft((D + calculateG(A, B, C) + X[i + 6] + T.at(17)), 9);
     C = D + rotateLeft((C + calculateG(D, A, B) + X[i + 11] + T.at(18)), 14);
@@ -154,7 +149,7 @@ void Md5::runRound2(size_t i, const uint32_t *X) {
     B = C + rotateLeft((B + calculateG(C, D, A) + X[i + 12] + T.at(31)), 20);
 }
 
-void Md5::runRound3(size_t i, const uint32_t *X) {
+void Md5::runStage3(size_t i, const uint32_t *X) {
     A = B + rotateLeft((A + calculateH(B, C, D) + X[i + 5] + T.at(32)), 4);
     D = A + rotateLeft((D + calculateH(A, B, C) + X[i + 8] + T.at(33)), 11);
     C = D + rotateLeft((C + calculateH(D, A, B) + X[i + 11] + T.at(34)), 16);
@@ -176,7 +171,7 @@ void Md5::runRound3(size_t i, const uint32_t *X) {
     B = C + rotateLeft((B + calculateH(C, D, A) + X[i + 2] + T.at(47)), 23);
 }
 
-void Md5::runRound4(size_t i, const uint32_t *X) {
+void Md5::runStage4(size_t i, const uint32_t *X) {
     A = B + rotateLeft((A + calculateI(B, C, D) + X[i + 0] + T.at(48)), 6);
     D = A + rotateLeft((D + calculateI(A, B, C) + X[i + 7] + T.at(49)), 10);
     C = D + rotateLeft((C + calculateI(D, A, B) + X[i + 14] + T.at(50)), 15);

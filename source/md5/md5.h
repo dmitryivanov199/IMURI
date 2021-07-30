@@ -46,13 +46,13 @@ private:
 
     static void initializeT();
 
-    static void runRound1(size_t i, const uint32_t *X);
+    static void runStage1(size_t i, const uint32_t *X);
 
-    static void runRound2(size_t i, const uint32_t *X);
+    static void runStage2(size_t i, const uint32_t *X);
 
-    static void runRound3(size_t i, const uint32_t *X);
+    static void runStage3(size_t i, const uint32_t *X);
 
-    static void runRound4(size_t i, const uint32_t *X);
+    static void runStage4(size_t i, const uint32_t *X);
 
     static uint32_t rotateLeft(uint32_t value, uint32_t shift);
 
