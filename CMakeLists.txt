@@ -17,4 +17,8 @@ add_executable(IMURI main.cpp
         source/radio_app/radio_app.h
         source/radio_app/radio_app.cpp
         source/radio_app/ra_option_id/ra_option_id.h
-        tests/md5/test.cpp)
+        tests/md5/md5_tests.cpp
+        source/zip/zip.h
+        source/zip/zip.cpp
+        source/radio_package/rap_format/rap_header/rap_descriptor.h
+        source/radio_package/rap_format/date/date.h source/radio_package/rap_format/rap_header/rap_structure_descriptor.h source/radio_package/rap_format/rap_header/radio_lib_descriptor.h source/radio_package/rap_format/rap_header/target_platform_descriptor.h source/radio_package/rap_format/rap_header/rap_header.h)
