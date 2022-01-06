@@ -1,0 +1,12 @@
+#ifndef IMURI_RADIO_APP_STATUS_H
+#define IMURI_RADIO_APP_STATUS_H
+
+enum class RadioAppStatus {
+    DOWNLOADED,
+    INSTALLED,
+    INSTANTIATED,
+    ACTIVE,
+    DEACTIVE
+};
+
+#endif //IMURI_RADIO_APP_STATUS_H

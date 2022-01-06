@@ -1,7 +1,3 @@
-//
-// Created by apt-15 on 30.07.2021.
-//
-
 #ifndef IMURI_RA_OPTION_ID_H
 #define IMURI_RA_OPTION_ID_H
 
