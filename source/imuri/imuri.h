@@ -6,7 +6,6 @@
 #include "data_flow_services.h"
 
 class IMURI : public IAdministrativeServices, public IAccessControlServices, public IDataFlowServices {
-
 };
 
 #endif //IMURI_IMURI_H

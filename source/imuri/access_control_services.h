@@ -6,25 +6,25 @@
 #include <vector>
 
 class IAccessControlServices {
-//    int8_t activateRadioApps(const std::string &ID) = 0;
+//    virtual int8_t activateRadioApps(const std::string &ID) = 0;
 
-//    bool deactivateRadioApps(const std::string &ID) = 0;
+//    virtual bool deactivateRadioApps(const std::string &ID) = 0;
 
-//    bool startRadioMeasurement(const std::string &ID) = 0;
+//    virtual bool startRadioMeasurement(const std::string &ID) = 0;
 
-//    std::vector<RadioMeasurement> stopRadioMeasurement(const std::string &ID) = 0;
+//    virtual std::vector<RadioMeasurement> stopRadioMeasurement(const std::string &ID) = 0;
 
-//    int8_t createAssociation() = 0;
+//    virtual int8_t createAssociation() = 0;
 
-//    bool terminateAssociation() = 0;
+//    virtual bool terminateAssociation() = 0;
 
-//    int8_t createDataFlow() = 0;
+//    virtual int8_t createDataFlow() = 0;
 
-//    int8_t terminateDataFlow() = 0;
+//    virtual int8_t terminateDataFlow() = 0;
 
-//    int8_t changeDataFlow() = 0;
+//    virtual int8_t changeDataFlow() = 0;
 
-//    void reportErrors() = 0;
+//    virtual void reportErrors() = 0;
 };
 
 #endif //IMURI_ACCESS_CONTROL_SERVICES_H

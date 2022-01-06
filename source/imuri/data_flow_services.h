@@ -2,9 +2,9 @@
 #define IMURI_DATA_FLOW_SERVICES_H
 
 class IDataFlowServices {
-//    bool sendUserData() = 0;
+//    virtual bool sendUserData() = 0;
 
-//    UserData receiveUserData() = 0;
+//    virtual UserData receiveUserData() = 0;
 };
 
 #endif //IMURI_DATA_FLOW_SERVICES_H

@@ -15,4 +15,6 @@ add_executable(IMURI main.cpp
         source/imuri/administrative_services.h
         source/imuri/access_control_services.h
         source/imuri/data_flow_services.h
-        source/radio_app/ra_parameter/ra_parameter.h)
+        source/radio_app/ra_parameter/ra_parameter.h
+        source/radio_computer/radio_computer.h
+        source/radio_computer/radio_computer.cpp)
