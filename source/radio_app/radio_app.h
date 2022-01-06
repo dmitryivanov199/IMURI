@@ -5,6 +5,7 @@
 #include <vector>
 
 #include "ra_option/ra_option.h"
+#include "ra_parameter/ra_parameter.h"
 #include "radio_app_status/radio_app_status.h"
 
 class RadioApp {
@@ -12,11 +13,13 @@ private:
     std::string RadioAppID;
     std::string RAVersion;
     RadioAppStatus radioAppStatus;
+
     std::vector<RAOption<double>> listOfSupportedOptions;
+    std::vector<RadioAppParameter<double>> listOfParameters;
 
 public:
     RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status,
-             const std::vector<RAOption<double>> &options);
+             const std::vector<RAOption<double>> &options, const std::vector<RadioAppParameter<double>> &parameters);
 
     ~RadioApp();
 

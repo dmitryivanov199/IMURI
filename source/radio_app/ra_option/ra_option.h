@@ -1,8 +1,6 @@
 #ifndef IMURI_RA_OPTION_H
 #define IMURI_RA_OPTION_H
 
-#include <string>
-
 enum class RAOptionID {
     lte5Mhz,
     lte10Mhz,
