@@ -9,7 +9,7 @@
 #include "../radio_app/radio_app.h"
 
 class IAdministrativeServices {
-//    virtual int8_t installRadioApps(const std::string &ID) = 0;
+    virtual int8_t installRadioApps(const std::string &appID) = 0;
 
 //    virtual int8_t uninstallRadioApps(const std::string &ID) = 0;
 

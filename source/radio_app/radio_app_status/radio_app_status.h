@@ -2,7 +2,6 @@
 #define IMURI_RADIO_APP_STATUS_H
 
 enum class RadioAppStatus {
-    DOWNLOADED,
     INSTALLED,
     INSTANTIATED,
     ACTIVE,

@@ -26,4 +26,8 @@ add_executable(IMURI main.cpp
         source/rcf/radio_connection_manager/radio_connection_manager.h
         source/rcf/multi_radio_controller/multi_radio_controller.h
         source/rcf/resource_manager/resource_manager.h
-        source/rcf/flow_controller/flow_controller.h)
+        source/rcf/flow_controller/flow_controller.h
+        source/csl/administrator/administrator.cpp
+        source/rcf/configuration_manager/configuration_manager.cpp
+        source/file_manager/file_manager.h
+        source/file_manager/file_manager.cpp)

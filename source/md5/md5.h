@@ -1,14 +1,10 @@
-//
-// Created by apt-15 on 29.07.2021.
-//
-
 #ifndef IMURI_MD5_H
 #define IMURI_MD5_H
 
+#include <array>
+#include <cstdint>
 #include <string>
 #include <vector>
-#include <cstdint>
-#include <array>
 
 class Md5 {
 private:
