@@ -17,4 +17,8 @@ add_executable(IMURI main.cpp
         source/imuri/data_flow_services.h
         source/radio_app/ra_parameter/ra_parameter.h
         source/radio_computer/radio_computer.h
-        source/radio_computer/radio_computer.cpp)
+        source/radio_computer/radio_computer.cpp
+        source/csl/administrator/administrator.h
+        source/csl/mobility_policy_manager/mobility_policy_manager.h
+        source/csl/networking_stack/networking_stack.h
+        source/csl/monitor/monitor.h)
