@@ -14,7 +14,7 @@ private:
     std::vector<RadioApp> listOfRadioApps;
 
 public:
-    RadioComputer(const std::string &id, const std::vector<RadioApp> radioApps);
+    RadioComputer(const std::string &id);
 
     ~RadioComputer() = default;
 };

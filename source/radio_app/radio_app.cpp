@@ -1,13 +1,11 @@
 #include "radio_app.h"
 
-RadioApp::RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status,
-                   const std::vector<RAOption<double>> &options,
-                   const std::vector<RadioAppParameter<double>> &parameters) :
+RadioApp::RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status) :
         RadioAppID(id),
         RAVersion(version),
-        radioAppStatus(status),
-        listOfSupportedOptions(options),
-        listOfParameters(parameters) {
+        radioAppStatus(status) {
+    listOfSupportedOptions.clear();
+    listOfParameters.clear();
 }
 
 RadioApp::~RadioApp() = default;

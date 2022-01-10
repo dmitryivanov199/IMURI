@@ -18,8 +18,7 @@ private:
     std::vector<RadioAppParameter<double>> listOfParameters;
 
 public:
-    RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status,
-             const std::vector<RAOption<double>> &options, const std::vector<RadioAppParameter<double>> &parameters);
+    RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status);
 
     ~RadioApp();
 
