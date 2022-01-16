@@ -21,4 +21,4 @@ add_executable(IMURI main.cpp
         source/error_codes/error_codes.h
         source/rap/rap_header.h
         source/rap/date.h
-        source/rap/ura_code_section.h)
+        source/rap/ura_code_section.h source/rap/padding_bit.h)
