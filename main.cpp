@@ -11,7 +11,7 @@ void printMenu();
 
 void processCommand(const std::string &cmd, RadioComputer &radioComputer);
 
-std::string inputAppID();
+std::string inputID(const std::string &message);
 
 void parseInstallationCode(int8_t code);
 
@@ -41,13 +41,13 @@ void printMenu() {
 
 void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     if (cmd == "1") {
-        int8_t result = radioComputer.installRadioApps(<#initializer#>, inputAppID());
+        int8_t result = radioComputer.installRadioApps(inputID("Input RAP ID"), inputID("Input URA ID"));
         parseInstallationCode(result);
     }
 }
 
-std::string inputAppID() {
-    std::cout << "Input URA ID" << std::endl;
+std::string inputID(const std::string &message) {
+    std::cout << message << std::endl;
     std::cout << "> ";
     std::string ID;
     std::cin >> ID;

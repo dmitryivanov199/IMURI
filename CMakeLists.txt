@@ -17,4 +17,8 @@ add_executable(IMURI main.cpp
         source/imuri/data_flow_services.h
         source/radio_app/ra_parameter/ra_parameter.h
         source/radio_computer/radio_computer.h
-        source/radio_computer/radio_computer.cpp)
+        source/radio_computer/radio_computer.cpp
+        source/error_codes/error_codes.h
+        source/rap/rap_header.h
+        source/rap/date.h
+        source/rap/ura_code_section.h)
