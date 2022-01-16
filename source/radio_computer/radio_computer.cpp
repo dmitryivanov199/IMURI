@@ -2,19 +2,14 @@
 #include "radio_computer.h"
 
 RadioComputer::RadioComputer(const std::string &ID) :
-        radioComputerID(ID) {
+        radioComputerID{ID} {
     listOfRadioApps.clear();
-
-    fileManager.setAppsPath("/home/apt-15/Docs/ura/For_Dmitry/");
-    std::vector<std::string> IDs;
-    IDs.push_back("URA1");
-    fileManager.setAppsIds(IDs);
 }
 
-std::string RadioComputer::getAppsPath() {
-    return fileManager.getAppsPath();
+int8_t RadioComputer::installRadioApps(const std::string &rapID, const std::string &appID) {
+
 }
 
-int8_t RadioComputer::installRadioApps(const std::string &appID) {
-    return administrator.installRAReq(appID, listOfRadioApps, configurationManager, fileManager);
+void RadioComputer::extractRAP(const std::string &rapID, const std::string &appID) {
+
 }

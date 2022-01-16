@@ -17,8 +17,8 @@ private:
 
 public:
     RadioAppParameter(const RadioAppParameterID &parameterId, const T &parameterValue) :
-            radioAppParameterName(parameterId),
-            radioAppParameterValue(parameterValue) {
+            radioAppParameterName{parameterId},
+            radioAppParameterValue{parameterValue} {
     }
 
     ~RadioAppParameter() = default;

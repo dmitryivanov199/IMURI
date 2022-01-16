@@ -5,31 +5,26 @@
 #include <string>
 #include <vector>
 
-#include "../csl/administrator/administrator.h"
-#include "../file_manager/file_manager.h"
 #include "../imuri/imuri.h"
 #include "../radio_app/radio_app.h"
-#include "../rcf/configuration_manager/configuration_manager.h"
 
 class RadioComputer : public IMURI {
 private:
     std::string radioComputerID;
+    const char *rapPath = "/home/apt-15/Docs/rrs/rap/";
+    const char *uraPath = "/home/apt-15/Docs/rrs/ura/";
+
     std::vector<RadioApp> listOfRadioApps;
-
-    CSL::Administrator administrator;
-
-    RCF::ConfigurationManager configurationManager;
-
-    FileManager fileManager;
 
 public:
     RadioComputer(const std::string &ID);
 
     ~RadioComputer() = default;
 
-    std::string getAppsPath();
+    int8_t installRadioApps(const std::string &rapID, const std::string &appID) override;
 
-    int8_t installRadioApps(const std::string &appID) override;
+private:
+    void extractRAP(const std::string &rapID, const std::string &appID);
 };
 
 #endif //IMURI_RADIO_COMPUTER_H

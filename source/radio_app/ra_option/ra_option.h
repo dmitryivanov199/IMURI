@@ -17,8 +17,8 @@ private:
 
 public:
     RAOption(const RAOptionID &optionName, const T &optionValue) :
-            rAOptionName(optionName),
-            rAOptionValue(optionValue) {
+            rAOptionName{optionName},
+            rAOptionValue{optionValue} {
     }
 
     ~RAOption() = default;
