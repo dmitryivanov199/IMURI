@@ -11,7 +11,7 @@
 #include "../rap/rap_header.h"
 #include "../rap/ura_code_section.h"
 
-class RadioComputer : public IMURI {
+class RadioComputer : public IMURI::IAdministrativeServices, public IMURI::IAccessControlServices {
 private:
     std::string radioComputerId;
     const char *packPath = "/home/apt-15/Docs/rrs/rap/";

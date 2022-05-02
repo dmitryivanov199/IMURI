@@ -9,9 +9,6 @@ add_executable(IMURI main.cpp
         source/radio_app/radio_app.cpp
         source/radio_app/radio_app_status/radio_app_status.h
         source/imuri/imuri.h
-        source/imuri/administrative_services.h
-        source/imuri/access_control_services.h
-        source/imuri/data_flow_services.h
         source/radio_computer/radio_computer.h
         source/radio_computer/radio_computer.cpp
         source/error_codes/error_codes.h
