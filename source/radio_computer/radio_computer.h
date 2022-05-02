@@ -1,7 +1,7 @@
 #ifndef IMURI_RADIO_COMPUTER_H
 #define IMURI_RADIO_COMPUTER_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 
@@ -20,7 +20,7 @@ private:
     std::vector<RadioApp> listOfRadioApps;
 
 public:
-    RadioComputer(const std::string &ID);
+    explicit RadioComputer(std::string ID);
 
     ~RadioComputer() = default;
 

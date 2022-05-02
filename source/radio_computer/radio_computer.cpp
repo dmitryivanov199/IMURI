@@ -2,13 +2,14 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <utility>
 
 #include "../error_codes/error_codes.h"
 #include "../radio_app/radio_app_status/radio_app_status.h"
 #include "radio_computer.h"
 
-RadioComputer::RadioComputer(const std::string &ID) :
-        radioComputerID{ID} {
+RadioComputer::RadioComputer(std::string ID) :
+        radioComputerID{std::move(ID)} {
     listOfRadioApps.clear();
 }
 
@@ -221,20 +222,20 @@ bool RadioComputer::isNeededURA(const std::string &appID, std::array<unsigned ch
 }
 
 std::string RadioComputer::convertIDToString(std::array<unsigned char, 8> ID) {
-    std::string stringID{""};
+    std::string stringID;
 
     for (size_t i = 0; ID.at(i) != '\0'; i++) {
-        stringID += ID.at(i);
+        stringID += static_cast<char>(ID.at(i));
     }
 
     return stringID;
 }
 
 std::string RadioComputer::convertVersionToString(std::array<unsigned char, 4> version) {
-    std::string stringVersion{""};
+    std::string stringVersion;
 
     for (size_t i = 0; version.at(i) != '\0'; i++) {
-        stringVersion += version.at(i);
+        stringVersion += static_cast<char>(version.at(i));
     }
 
     return stringVersion;

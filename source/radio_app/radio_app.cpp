@@ -1,8 +1,10 @@
 #include "radio_app.h"
 
-RadioApp::RadioApp(const std::string &id, const std::string &version, const RadioAppStatus &status) :
-        RadioAppID{id},
-        RAVersion{version},
+#include <utility>
+
+RadioApp::RadioApp(std::string id, std::string version, const RadioAppStatus &status) :
+        RadioAppID{std::move(id)},
+        RAVersion{std::move(version)},
         radioAppStatus{status} {
     listOfSupportedOptions.clear();
     listOfParameters.clear();

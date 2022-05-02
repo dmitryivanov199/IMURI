@@ -1,7 +1,7 @@
 #ifndef IMURI_ADMINISTRATIVE_SERVICES_H
 #define IMURI_ADMINISTRATIVE_SERVICES_H
 
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 #include <vector>
 
