@@ -5,7 +5,6 @@
 #include <string>
 #include <vector>
 
-#include "../radio_app/ra_parameter/ra_parameter.h"
 #include "../radio_app/radio_app.h"
 
 class IAdministrativeServices {

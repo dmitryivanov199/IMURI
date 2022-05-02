@@ -6,8 +6,6 @@ RadioApp::RadioApp(std::string id, std::string version, const RadioAppStatus &st
         RadioAppID{std::move(id)},
         RAVersion{std::move(version)},
         radioAppStatus{status} {
-    listOfSupportedOptions.clear();
-    listOfParameters.clear();
 }
 
 RadioApp::~RadioApp() = default;
