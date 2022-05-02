@@ -5,14 +5,14 @@
 
 #include "date.h"
 
-struct RAPDescriptor {
-    std::array<unsigned char, 8> packID;
+struct RapDescriptor {
+    std::array<unsigned char, 8> packId;
     std::array<unsigned char, 4> packVersion;
     Date packDate;
-    uint8_t packProducerID;
+    uint8_t packProducerId;
 };
 
-struct RAPStructureDescriptor {
+struct RapStructureDescriptor {
     uint8_t manufacturerInfoFlag: 1;
     uint8_t initialProfileFlag: 1;
     uint8_t packReserveFlag: 1;
@@ -28,13 +28,13 @@ struct RadioLibDescriptor {
 };
 
 struct TargetPlatformDescriptor {
-    uint8_t targetPlatformID;
+    uint8_t targetPlatformId;
     uint8_t reconfigurationClass;
 };
 
-struct RAPHeader {
-    RAPDescriptor packDescriptor;
-    RAPStructureDescriptor packStructureDescriptor;
+struct RapHeader {
+    RapDescriptor packDescriptor;
+    RapStructureDescriptor packStructureDescriptor;
     RadioLibDescriptor radioLibDescriptor;
     TargetPlatformDescriptor targetPlatformDescriptor;
 };

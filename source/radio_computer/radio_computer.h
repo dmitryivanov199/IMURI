@@ -13,47 +13,47 @@
 
 class RadioComputer : public IMURI {
 private:
-    std::string radioComputerID;
+    std::string radioComputerId;
     const char *packPath = "/home/apt-15/Docs/rrs/rap/";
     const char *appPath = "/home/apt-15/Docs/rrs/ura/";
 
     std::vector<RadioApp> listOfRadioApps;
 
 public:
-    explicit RadioComputer(std::string ID);
+    explicit RadioComputer(std::string id);
 
     ~RadioComputer() = default;
 
-    int8_t installRadioApps(const std::string &packID, const std::string &appID) override;
+    int8_t installRadioApps(const std::string &packId, const std::string &appId) override;
 
 private:
-    bool isAppInstalled(const std::string &appID);
+    bool isAppInstalled(const std::string &appId);
 
-    bool isRAPDownloaded(const std::string &packID);
+    bool isRapDownloaded(const std::string &packId);
 
-    void getRAPFileName(char *fileName, const std::string &packID);
+    void getRapFileName(char *fileName, const std::string &packId);
 
-    int8_t extractRAP(const std::string &packID, const std::string &appID);
+    int8_t extractRap(const std::string &packId, const std::string &appId);
 
-    static void printRAPHeaderInfo(const RAPHeader &header);
+    static void printRapHeaderInfo(const RapHeader &header);
 
-    int8_t extractURA(std::ifstream &pack, const std::string &appID);
+    int8_t extractUra(std::ifstream &pack, const std::string &appId);
 
-    static void printRAPDescriptorInfo(const RAPDescriptor &descriptor);
+    static void printRapDescriptorInfo(const RapDescriptor &descriptor);
 
     static void printDate(const Date &date);
 
-    static void printRAPStructureDescriptor(const RAPStructureDescriptor &descriptor);
+    static void printRapStructureDescriptor(const RapStructureDescriptor &descriptor);
 
     static void printRadioLibDescriptorInfo(const RadioLibDescriptor &descriptor);
 
     static void printTargetPlatformDescriptorInfo(const TargetPlatformDescriptor &descriptor);
 
-    static void printURADescriptorInfo(const URADescriptor &descriptor);
+    static void printUraDescriptorInfo(const UraDescriptor &descriptor);
 
-    bool isNeededURA(const std::string &appID, std::array<unsigned char, 8> ID);
+    bool isNeededUra(const std::string &appId, std::array<unsigned char, 8> id);
 
-    static std::string convertIDToString(std::array<unsigned char, 8> ID);
+    static std::string convertIdToString(std::array<unsigned char, 8> id);
 
     static std::string convertVersionToString(std::array<unsigned char, 4> version);
 };

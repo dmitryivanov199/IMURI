@@ -8,26 +8,26 @@
 #include "../radio_app/radio_app_status/radio_app_status.h"
 #include "radio_computer.h"
 
-RadioComputer::RadioComputer(std::string ID) :
-        radioComputerID{std::move(ID)} {
+RadioComputer::RadioComputer(std::string id) :
+        radioComputerId{std::move(id)} {
     listOfRadioApps.clear();
 }
 
-int8_t RadioComputer::installRadioApps(const std::string &packID, const std::string &appID) {
-    if (isAppInstalled(appID)) {
+int8_t RadioComputer::installRadioApps(const std::string &packId, const std::string &appId) {
+    if (isAppInstalled(appId)) {
         return static_cast<int8_t>(Codes::Installation::ALREADY_INSTALLED);
     }
 
-    if (isRAPDownloaded(packID)) {
-        return extractRAP(packID, appID);
+    if (isRapDownloaded(packId)) {
+        return extractRap(packId, appId);
     }
 
     return static_cast<int8_t>(Codes::Installation::NO_RAP);
 }
 
-bool RadioComputer::isAppInstalled(const std::string &appID) {
+bool RadioComputer::isAppInstalled(const std::string &appId) {
     for (auto app: listOfRadioApps) {
-        if (app.getAppId() == appID) {
+        if (app.getAppId() == appId) {
             return true;
         }
     }
@@ -35,9 +35,9 @@ bool RadioComputer::isAppInstalled(const std::string &appID) {
     return false;
 }
 
-bool RadioComputer::isRAPDownloaded(const std::string &packID) {
+bool RadioComputer::isRapDownloaded(const std::string &packId) {
     char fileName[50];
-    getRAPFileName(fileName, packID);
+    getRapFileName(fileName, packId);
     std::ifstream pack(fileName, std::ios_base::in | std::ios_base::binary);
 
     if (pack.is_open()) {
@@ -48,35 +48,35 @@ bool RadioComputer::isRAPDownloaded(const std::string &packID) {
     return false;
 }
 
-void RadioComputer::getRAPFileName(char *fileName, const std::string &packID) {
+void RadioComputer::getRapFileName(char *fileName, const std::string &packId) {
     strcpy(fileName, packPath);
     strcat(fileName, "/");
-    strcat(fileName, packID.c_str());
+    strcat(fileName, packId.c_str());
     strcat(fileName, ".bin");
 }
 
-int8_t RadioComputer::extractRAP(const std::string &packID, const std::string &appID) {
-    std::cout << "Extracting RAP with ID " << packID << "..." << std::endl;
+int8_t RadioComputer::extractRap(const std::string &packId, const std::string &appId) {
+    std::cout << "Extracting RAP with ID " << packId << "..." << std::endl;
 
     char fileName[50];
-    getRAPFileName(fileName, packID);
+    getRapFileName(fileName, packId);
     std::ifstream pack(fileName, std::ios_base::in | std::ios_base::binary);
 
     if (pack.is_open()) {
-        RAPHeader packHeader{};
+        RapHeader packHeader{};
         pack.read((char *) &packHeader, sizeof(packHeader));
-        printRAPHeaderInfo(packHeader);
-        return extractURA(pack, appID);
+        printRapHeaderInfo(packHeader);
+        return extractUra(pack, appId);
     }
 
     return static_cast<int8_t>(Codes::Installation::BAD_FILE);
 }
 
-void RadioComputer::printRAPHeaderInfo(const RAPHeader &header) {
+void RadioComputer::printRapHeaderInfo(const RapHeader &header) {
     std::cout << "----- RAP header -----" << std::endl;
-    printRAPDescriptorInfo(header.packDescriptor);
+    printRapDescriptorInfo(header.packDescriptor);
     std::cout << std::endl;
-    printRAPStructureDescriptor(header.packStructureDescriptor);
+    printRapStructureDescriptor(header.packStructureDescriptor);
     std::cout << std::endl;
     printRadioLibDescriptorInfo(header.radioLibDescriptor);
     std::cout << std::endl;
@@ -84,7 +84,7 @@ void RadioComputer::printRAPHeaderInfo(const RAPHeader &header) {
     std::cout << std::endl;
 }
 
-int8_t RadioComputer::extractURA(std::ifstream &pack, const std::string &appID) {
+int8_t RadioComputer::extractUra(std::ifstream &pack, const std::string &appId) {
     uint64_t codeSectionSize;
     pack.read((char *) &codeSectionSize, sizeof(codeSectionSize));
     uint64_t bytesRead = 0;
@@ -92,18 +92,18 @@ int8_t RadioComputer::extractURA(std::ifstream &pack, const std::string &appID) 
     std::cout << "----- URA code section -----" << std::endl;
 
     while (bytesRead <= codeSectionSize) {
-        URADescriptor descriptor{};
+        UraDescriptor descriptor{};
         pack.read((char *) &descriptor, sizeof(descriptor));
-        printURADescriptorInfo(descriptor);
+        printUraDescriptorInfo(descriptor);
         bytesRead += sizeof(descriptor);
 
-        if (isNeededURA(appID, descriptor.appID)) {
+        if (isNeededUra(appId, descriptor.appId)) {
             PaddingBit bit{1};
 
             while (bit.paddingBit == 1) {
                 pack.read((char *) &bit, sizeof(bit));
 
-                URAComponentHeader header{};
+                UraComponentHeader header{};
                 pack.read((char *) &header, sizeof(header));
 
                 uint64_t appSize;
@@ -115,7 +115,7 @@ int8_t RadioComputer::extractURA(std::ifstream &pack, const std::string &appID) 
                 strcpy(fileName, "\0");
                 strcat(fileName, appPath);
                 strcat(fileName, "URA/");
-                strcat(fileName, appID.c_str());
+                strcat(fileName, appId.c_str());
 
                 std::ofstream appFile(fileName, std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
 
@@ -133,11 +133,11 @@ int8_t RadioComputer::extractURA(std::ifstream &pack, const std::string &appID) 
                 strcat(cmd, "chmod +x ");
                 strcat(cmd, appPath);
                 strcat(cmd, "URA/");
-                strcat(cmd, appID.c_str());
+                strcat(cmd, appId.c_str());
 
                 system(cmd);
 
-                std::string ID = convertIDToString(descriptor.appID);
+                std::string ID = convertIdToString(descriptor.appId);
                 std::string version = convertVersionToString(descriptor.appVersion);
                 RadioApp app{ID, version, RadioAppStatus::INSTALLED};
                 listOfRadioApps.push_back(app);
@@ -148,11 +148,11 @@ int8_t RadioComputer::extractURA(std::ifstream &pack, const std::string &appID) 
     }
 }
 
-void RadioComputer::printRAPDescriptorInfo(const RAPDescriptor &descriptor) {
+void RadioComputer::printRapDescriptorInfo(const RapDescriptor &descriptor) {
     std::cout << "RAP ID: ";
 
-    for (size_t i = 0; descriptor.packID.at(i) != '\0'; i++) {
-        std::cout << descriptor.packID.at(i);
+    for (size_t i = 0; descriptor.packId.at(i) != '\0'; i++) {
+        std::cout << descriptor.packId.at(i);
     }
 
     std::cout << std::endl << "RAP version: ";
@@ -163,7 +163,7 @@ void RadioComputer::printRAPDescriptorInfo(const RAPDescriptor &descriptor) {
 
     std::cout << std::endl << "RAP date: ";
     printDate(descriptor.packDate);
-    std::cout << "RAP producer ID: " << static_cast<int>(descriptor.packProducerID) << std::endl;
+    std::cout << "RAP producer ID: " << static_cast<int>(descriptor.packProducerId) << std::endl;
 }
 
 void RadioComputer::printDate(const Date &date) {
@@ -171,7 +171,7 @@ void RadioComputer::printDate(const Date &date) {
               << static_cast<int>(date.year) << std::endl;
 }
 
-void RadioComputer::printRAPStructureDescriptor(const RAPStructureDescriptor &descriptor) {
+void RadioComputer::printRapStructureDescriptor(const RapStructureDescriptor &descriptor) {
     std::cout << "Manufacturer info flag: " << static_cast<int>(descriptor.manufacturerInfoFlag) << std::endl;
     std::cout << "Initial profile flag: " << static_cast<int>(descriptor.initialProfileFlag) << std::endl;
     std::cout << "RAP reserve flag: " << static_cast<int>(descriptor.packReserveFlag) << std::endl;
@@ -194,15 +194,15 @@ void RadioComputer::printRadioLibDescriptorInfo(const RadioLibDescriptor &descri
 }
 
 void RadioComputer::printTargetPlatformDescriptorInfo(const TargetPlatformDescriptor &descriptor) {
-    std::cout << "Target platform ID: " << static_cast<int>(descriptor.targetPlatformID) << std::endl;
+    std::cout << "Target platform ID: " << static_cast<int>(descriptor.targetPlatformId) << std::endl;
     std::cout << "Reconfiguration class: " << static_cast<int>(descriptor.reconfigurationClass) << std::endl;
 }
 
-void RadioComputer::printURADescriptorInfo(const URADescriptor &descriptor) {
+void RadioComputer::printUraDescriptorInfo(const UraDescriptor &descriptor) {
     std::cout << "URA ID: ";
 
-    for (size_t i = 0; descriptor.appID.at(i) != '\0'; i++) {
-        std::cout << descriptor.appID.at(i);
+    for (size_t i = 0; descriptor.appId.at(i) != '\0'; i++) {
+        std::cout << descriptor.appId.at(i);
     }
 
     std::cout << std::endl << "URA version: ";
@@ -213,19 +213,19 @@ void RadioComputer::printURADescriptorInfo(const URADescriptor &descriptor) {
 
     std::cout << std::endl << "URA date: ";
     printDate(descriptor.appDate);
-    std::cout << "URA producer ID: " << static_cast<int>(descriptor.appProducerID) << std::endl;
+    std::cout << "URA producer ID: " << static_cast<int>(descriptor.appProducerId) << std::endl;
 }
 
-bool RadioComputer::isNeededURA(const std::string &appID, std::array<unsigned char, 8> ID) {
-    std::string stringID = convertIDToString(ID);
-    return appID == stringID;
+bool RadioComputer::isNeededUra(const std::string &appId, std::array<unsigned char, 8> id) {
+    std::string stringID = convertIdToString(id);
+    return appId == stringID;
 }
 
-std::string RadioComputer::convertIDToString(std::array<unsigned char, 8> ID) {
+std::string RadioComputer::convertIdToString(std::array<unsigned char, 8> id) {
     std::string stringID;
 
-    for (size_t i = 0; ID.at(i) != '\0'; i++) {
-        stringID += static_cast<char>(ID.at(i));
+    for (size_t i = 0; id.at(i) != '\0'; i++) {
+        stringID += static_cast<char>(id.at(i));
     }
 
     return stringID;
