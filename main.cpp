@@ -1,5 +1,5 @@
 #include <iostream>
-#include <stdint.h>
+#include <cstdint>
 #include <string>
 
 #include "source/radio_computer/radio_computer.h"
@@ -18,7 +18,7 @@ void parseInstallationCode(int8_t code);
 int main() {
     RadioComputer radioComputer("RC1");
 
-    std::string cmd = "";
+    std::string cmd;
 
     while (isRun(cmd)) {
         printMenu();

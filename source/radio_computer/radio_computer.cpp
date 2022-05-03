@@ -85,67 +85,80 @@ void RadioComputer::printRapHeaderInfo(const RapHeader &header) {
 }
 
 int8_t RadioComputer::extractUra(std::ifstream &pack, const std::string &appId) {
-    uint64_t codeSectionSize;
+    uint64_t codeSectionSize = 0;
     pack.read((char *) &codeSectionSize, sizeof(codeSectionSize));
-    uint64_t bytesRead = 0;
 
     std::cout << "----- URA code section -----" << std::endl;
 
-    while (bytesRead <= codeSectionSize) {
-        UraDescriptor descriptor{};
-        pack.read((char *) &descriptor, sizeof(descriptor));
-        printUraDescriptorInfo(descriptor);
-        bytesRead += sizeof(descriptor);
+    UraDescriptor descriptor{};
+    pack.read((char *) &descriptor, sizeof(descriptor));
+    printUraDescriptorInfo(descriptor);
 
-        if (isNeededUra(appId, descriptor.appId)) {
-            PaddingBit bit{1};
+    if (isNeededUra(appId, descriptor.appId)) {
+        makeAppDirs(appId);
 
-            while (bit.paddingBit == 1) {
-                pack.read((char *) &bit, sizeof(bit));
+        PaddingBit bit{1};
 
-                UraComponentHeader header{};
-                pack.read((char *) &header, sizeof(header));
+        for (int i = 0; i < 2; i++) {
+            pack.read((char *) &bit, sizeof(bit));
 
-                uint64_t appSize;
-                pack.read((char *) &appSize, sizeof(appSize));
+            UraComponentHeader header{};
+            pack.read((char *) &header, sizeof(header));
 
-                uint64_t URABytesRead = 0;
+            uint64_t appSize = 0;
+            pack.read((char *) &appSize, sizeof(appSize));
+            uint64_t uraBytesRead = 0;
 
-                char fileName[50];
-                strcpy(fileName, "\0");
-                strcat(fileName, appPath);
-                strcat(fileName, "URA/");
-                strcat(fileName, appId.c_str());
+            char fileName[100];
+            strcpy(fileName, "\0");
+            strcat(fileName, appPath);
+            strcat(fileName, "/");
+            strcat(fileName, appId.c_str());
+            strcat(fileName, "/");
 
-                std::ofstream appFile(fileName, std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
-
-                while (URABytesRead <= appSize) {
-                    char byte;
-                    pack.get(byte);
-                    appFile.write((char *) &byte, sizeof(byte));
-                    URABytesRead++;
-                }
-
-                pack.close();
-
-                char cmd[50];
-                strcpy(cmd, "\0");
-                strcat(cmd, "chmod +x ");
-                strcat(cmd, appPath);
-                strcat(cmd, "URA/");
-                strcat(cmd, appId.c_str());
-
-                system(cmd);
-
-                std::string ID = convertIdToString(descriptor.appId);
-                std::string version = convertVersionToString(descriptor.appVersion);
-                RadioApp app{ID, version, RadioAppStatus::INSTALLED};
-                listOfRadioApps.push_back(app);
-
-                return static_cast<int8_t>(Codes::Installation::OK);
+            if (bit.paddingBit == 1) {
+                strcat(fileName, "receiver/receiver");
+            } else {
+                strcat(fileName, "transmitter/transmitter");
             }
+
+            std::ofstream appFile(fileName, std::ios_base::out | std::ios_base::binary | std::ios_base::trunc);
+
+            while (uraBytesRead < appSize) {
+                char byte;
+                pack.get(byte);
+                appFile.write((char *) &byte, sizeof(byte));
+                uraBytesRead++;
+            }
+
+            char cmd[100];
+            strcpy(cmd, "\0");
+            strcat(cmd, "chmod +x ");
+            strcat(cmd, appPath);
+            strcat(cmd, "/");
+            strcat(cmd, appId.c_str());
+            strcat(cmd, "/");
+
+            if (bit.paddingBit == 1) {
+                strcat(cmd, "receiver/receiver");
+            } else {
+                strcat(cmd, "transmitter/transmitter");
+            }
+
+            system(cmd);
         }
+
+        pack.close();
+
+        std::string id = convertIdToString(descriptor.appId);
+        std::string version = convertVersionToString(descriptor.appVersion);
+        RadioApp app{id, version, RadioAppStatus::INSTALLED};
+        listOfRadioApps.push_back(app);
+
+        return static_cast<int8_t>(Codes::Installation::OK);
     }
+
+    return static_cast<int8_t>(Codes::Installation::NO_URA);
 }
 
 void RadioComputer::printRapDescriptorInfo(const RapDescriptor &descriptor) {
@@ -213,7 +226,7 @@ void RadioComputer::printUraDescriptorInfo(const UraDescriptor &descriptor) {
 
     std::cout << std::endl << "URA date: ";
     printDate(descriptor.appDate);
-    std::cout << "URA producer ID: " << static_cast<int>(descriptor.appProducerId) << std::endl;
+    std::cout << "URA producer ID: " << static_cast<int>(descriptor.appProducerId) << std::endl << std::endl;
 }
 
 bool RadioComputer::isNeededUra(const std::string &appId, std::array<unsigned char, 8> id) {
@@ -239,4 +252,28 @@ std::string RadioComputer::convertVersionToString(std::array<unsigned char, 4> v
     }
 
     return stringVersion;
+}
+
+void RadioComputer::makeAppDirs(const std::string &appId) {
+    char cmd[100];
+
+    strcpy(cmd, "\0");
+    strcat(cmd, "mkdir ");
+    strcat(cmd, appPath);
+    strcat(cmd, "/");
+    strcat(cmd, appId.c_str());
+    system(cmd);
+
+    strcat(cmd, "/");
+    strcat(cmd, "receiver");
+    system(cmd);
+
+    strcpy(cmd, "\0");
+    strcat(cmd, "mkdir ");
+    strcat(cmd, appPath);
+    strcat(cmd, "/");
+    strcat(cmd, appId.c_str());
+    strcat(cmd, "/");
+    strcat(cmd, "transmitter");
+    system(cmd);
 }

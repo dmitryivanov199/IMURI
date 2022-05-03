@@ -14,8 +14,11 @@
 class RadioComputer : public IMURI::IAdministrativeServices, public IMURI::IAccessControlServices {
 private:
     std::string radioComputerId;
+
     const char *packPath = "/home/dmitry/projects/RAP/rap";
     const char *appPath = "/home/dmitry/projects/IMURI/ura";
+    const char *receiverConfigPath = "/home/dmitry/projects/RAP/ura/RRS_Receiver";
+    const char *transmitterConfigPath = "/home/dmitry/projects/RAP/ura/RRS_Transmitter";
 
     std::vector<RadioApp> listOfRadioApps;
 
@@ -51,11 +54,13 @@ private:
 
     static void printUraDescriptorInfo(const UraDescriptor &descriptor);
 
-    bool isNeededUra(const std::string &appId, std::array<unsigned char, 8> id);
+    static bool isNeededUra(const std::string &appId, std::array<unsigned char, 8> id);
 
     static std::string convertIdToString(std::array<unsigned char, 8> id);
 
     static std::string convertVersionToString(std::array<unsigned char, 4> version);
+
+    void makeAppDirs(const std::string &appId);
 };
 
 #endif //IMURI_RADIO_COMPUTER_H
