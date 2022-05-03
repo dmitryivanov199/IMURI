@@ -2,8 +2,8 @@
 #include <cstdint>
 #include <string>
 
+#include "source/error_codes/error_codes.h"
 #include "source/radio_computer/radio_computer.h"
-
 
 bool isRun(const std::string &cmd);
 
@@ -55,5 +55,33 @@ std::string inputID(const std::string &message) {
 }
 
 void parseInstallationCode(int8_t code) {
+    switch (code) {
+        case static_cast<int8_t>(Codes::Installation::OK): {
+            std::cout << "URA has been installed" << std::endl;
+            break;
+        }
 
+        case static_cast<int8_t>(Codes::Installation::NO_RAP): {
+            std::cout << "There is no RAP with such ID" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Installation::NO_URA): {
+            std::cout << "There is no URA with such ID in RAP" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Installation::ALREADY_INSTALLED): {
+            std::cout << "URA had been already installed" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Installation::BAD_FILE): {
+            std::cout << "RAP file cannot be opened" << std::endl;
+            break;
+        }
+
+        default:
+            break;
+    }
 }
