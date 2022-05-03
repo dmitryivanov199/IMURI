@@ -50,6 +50,31 @@ int8_t RadioComputer::uninstallRadioApps(const std::string &id) {
     return static_cast<int8_t>(Codes::Uninstallation::NO_URA);
 }
 
+int8_t RadioComputer::createRadioApps(const std::string &id) {
+    if (isAppInstalled(id)) {
+        RadioAppStatus status = getAppStatusById(id);
+
+        if (status == RadioAppStatus::ACTIVE) {
+            return static_cast<int8_t>(Codes::Instantiation::ACTIVATED);
+        }
+
+        if (status == RadioAppStatus::INSTANTIATED) {
+            return static_cast<int8_t>(Codes::Instantiation::ALREADY_INSTANTIATED);
+        }
+
+        for (auto &app: listOfRadioApps) {
+            if (app.getAppId() == id) {
+                app.setAppStatus(RadioAppStatus::INSTANTIATED);
+                break;
+            }
+        }
+
+        return static_cast<int8_t>(Codes::Instantiation::OK);
+    }
+
+    return static_cast<int8_t>(Codes::Instantiation::NO_URA);
+}
+
 bool RadioComputer::isAppInstalled(const std::string &appId) {
     for (auto app: listOfRadioApps) {
         if (app.getAppId() == appId) {

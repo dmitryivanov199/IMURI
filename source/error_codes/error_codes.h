@@ -15,6 +15,13 @@ namespace Codes {
         NO_URA,
         ACTIVATED
     };
+
+    enum class Instantiation {
+        OK,
+        NO_URA,
+        ACTIVATED,
+        ALREADY_INSTANTIATED
+    };
 }
 
 #endif //IMURI_ERROR_CODES_H

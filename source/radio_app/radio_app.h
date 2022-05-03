@@ -22,6 +22,8 @@ public:
     std::string getAppId();
 
     RadioAppStatus getAppStatus();
+
+    void setAppStatus(const RadioAppStatus &status);
 };
 
 #endif //IMURI_RADIO_APP_H

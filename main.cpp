@@ -17,6 +17,8 @@ void parseInstallationCode(int8_t code);
 
 void parseUninstallationCode(int8_t code);
 
+void parseInstantiationCode(int8_t code);
+
 int main() {
     RadioComputer radioComputer("RC1");
 
@@ -32,13 +34,15 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "3");
+    return !(cmd == "4");
 }
 
 void printMenu() {
+    std::cout << std::endl << "--------------------" << std::endl;
     std::cout << "1 - Install URA" << std::endl;
     std::cout << "2 - Uninstall URA" << std::endl;
-    std::cout << "3 - Exit" << std::endl;
+    std::cout << "3 - Instantiate URA" << std::endl;
+    std::cout << "4 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -49,6 +53,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     } else if (cmd == "2") {
         int8_t result = radioComputer.uninstallRadioApps(inputID("Input URA ID"));
         parseUninstallationCode(result);
+    } else if (cmd == "3") {
+        int8_t result = radioComputer.createRadioApps(inputID("Input URA ID"));
+        parseInstantiationCode(result);
     }
 }
 
@@ -78,7 +85,7 @@ void parseInstallationCode(int8_t code) {
         }
 
         case static_cast<int8_t>(Codes::Installation::ALREADY_INSTALLED): {
-            std::cout << "URA had been already installed" << std::endl;
+            std::cout << "URA had already been installed" << std::endl;
             break;
         }
 
@@ -106,6 +113,33 @@ void parseUninstallationCode(int8_t code) {
 
         case static_cast<int8_t>(Codes::Uninstallation::ACTIVATED): {
             std::cout << "This URA is activated" << std::endl;
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void parseInstantiationCode(int8_t code) {
+    switch (code) {
+        case static_cast<int8_t>(Codes::Instantiation::OK): {
+            std::cout << "URA has been instantiated" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Instantiation::NO_URA): {
+            std::cout << "There is no installed URA with such ID" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Instantiation::ACTIVATED): {
+            std::cout << "This URA is activated" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Instantiation::ALREADY_INSTANTIATED): {
+            std::cout << "URA had already been instantiated" << std::endl;
             break;
         }
 

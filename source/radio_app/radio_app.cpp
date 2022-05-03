@@ -26,3 +26,7 @@ std::string RadioApp::getAppId() {
 RadioAppStatus RadioApp::getAppStatus() {
     return radioAppStatus;
 }
+
+void RadioApp::setAppStatus(const RadioAppStatus &status) {
+    radioAppStatus = status;
+}
