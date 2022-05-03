@@ -61,6 +61,8 @@ private:
     static std::string convertVersionToString(std::array<unsigned char, 4> version);
 
     void makeAppDirs(const std::string &appId);
+
+    void putUraConfigs(const std::string &appId);
 };
 
 #endif //IMURI_RADIO_COMPUTER_H

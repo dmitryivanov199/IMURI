@@ -150,9 +150,9 @@ int8_t RadioComputer::extractUra(std::ifstream &pack, const std::string &appId) 
 
         pack.close();
 
-        std::string id = convertIdToString(descriptor.appId);
+        putUraConfigs(appId);
         std::string version = convertVersionToString(descriptor.appVersion);
-        RadioApp app{id, version, RadioAppStatus::INSTALLED};
+        RadioApp app{appId, version, RadioAppStatus::INSTALLED};
         listOfRadioApps.push_back(app);
 
         return static_cast<int8_t>(Codes::Installation::OK);
@@ -275,5 +275,29 @@ void RadioComputer::makeAppDirs(const std::string &appId) {
     strcat(cmd, appId.c_str());
     strcat(cmd, "/");
     strcat(cmd, "transmitter");
+    system(cmd);
+}
+
+void RadioComputer::putUraConfigs(const std::string &appId) {
+    char cmd[150];
+
+    strcpy(cmd, "\0");
+    strcat(cmd, "cp -f ");
+    strcat(cmd, receiverConfigPath);
+    strcat(cmd, "/*.cfg ");
+    strcat(cmd, appPath);
+    strcat(cmd, "/");
+    strcat(cmd, appId.c_str());
+    strcat(cmd, "/receiver");
+    system(cmd);
+
+    strcpy(cmd, "\0");
+    strcat(cmd, "cp -f ");
+    strcat(cmd, transmitterConfigPath);
+    strcat(cmd, "/*.cfg ");
+    strcat(cmd, appPath);
+    strcat(cmd, "/");
+    strcat(cmd, appId.c_str());
+    strcat(cmd, "/transmitter");
     system(cmd);
 }
