@@ -29,6 +29,8 @@ public:
 
     int8_t installRadioApps(const std::string &packId, const std::string &appId) override;
 
+    int8_t uninstallRadioApps(const std::string &id) override;
+
 private:
     bool isAppInstalled(const std::string &appId);
 
@@ -63,6 +65,10 @@ private:
     void makeAppDirs(const std::string &appId);
 
     void putUraConfigs(const std::string &appId);
+
+    RadioAppStatus getAppStatusById(const std::string &id);
+
+    RadioApp getAppById(const std::string &id);
 };
 
 #endif //IMURI_RADIO_COMPUTER_H

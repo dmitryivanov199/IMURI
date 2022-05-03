@@ -10,12 +10,17 @@ RadioApp::RadioApp(std::string id, std::string version, const RadioAppStatus &st
 
 RadioApp::~RadioApp() = default;
 
-std::string RadioApp::getAppId() {
-    return RadioAppID;
+bool RadioApp::operator==(const RadioApp &rhs) const {
+    if (this == &rhs) {
+        return true;
+    }
+
+    return this->RadioAppID == rhs.RadioAppID && this->RAVersion == rhs.RAVersion &&
+           this->radioAppStatus == rhs.radioAppStatus;
 }
 
-std::string RadioApp::getAppVersion() {
-    return RAVersion;
+std::string RadioApp::getAppId() {
+    return RadioAppID;
 }
 
 RadioAppStatus RadioApp::getAppStatus() {

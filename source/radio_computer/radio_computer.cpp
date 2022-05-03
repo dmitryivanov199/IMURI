@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
@@ -23,6 +24,30 @@ int8_t RadioComputer::installRadioApps(const std::string &packId, const std::str
     }
 
     return static_cast<int8_t>(Codes::Installation::NO_RAP);
+}
+
+int8_t RadioComputer::uninstallRadioApps(const std::string &id) {
+    if (isAppInstalled(id)) {
+        if (getAppStatusById(id) == RadioAppStatus::ACTIVE) {
+            return static_cast<int8_t>(Codes::Uninstallation::ACTIVATED);
+        }
+
+        char cmd[100];
+        strcpy(cmd, "\0");
+        strcat(cmd, "rm -rf ");
+        strcat(cmd, appPath);
+        strcat(cmd, "/");
+        strcat(cmd, id.c_str());
+        system(cmd);
+
+        RadioApp appToRemove = getAppById(id);
+        listOfRadioApps.erase(std::remove(listOfRadioApps.begin(), listOfRadioApps.end(), appToRemove),
+                              listOfRadioApps.end());
+
+        return static_cast<int8_t>(Codes::Uninstallation::OK);
+    }
+
+    return static_cast<int8_t>(Codes::Uninstallation::NO_URA);
 }
 
 bool RadioComputer::isAppInstalled(const std::string &appId) {
@@ -300,4 +325,24 @@ void RadioComputer::putUraConfigs(const std::string &appId) {
     strcat(cmd, appId.c_str());
     strcat(cmd, "/transmitter");
     system(cmd);
+}
+
+RadioAppStatus RadioComputer::getAppStatusById(const std::string &id) {
+    for (auto app: listOfRadioApps) {
+        if (app.getAppId() == id) {
+            return app.getAppStatus();
+        }
+    }
+
+    return RadioAppStatus::NOT_FOUND;
+}
+
+RadioApp RadioComputer::getAppById(const std::string &id) {
+    for (auto app: listOfRadioApps) {
+        if (app.getAppId() == id) {
+            return app;
+        }
+    }
+
+    return RadioApp{"", "", RadioAppStatus::NOT_FOUND};
 }

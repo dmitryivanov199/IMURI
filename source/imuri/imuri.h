@@ -9,8 +9,8 @@ public:
     public:
         virtual int8_t installRadioApps(const std::string &packId, const std::string &appId) = 0;
 
-//        virtual int8_t uninstallRadioApps(const std::string &id) = 0;
-//
+        virtual int8_t uninstallRadioApps(const std::string &id) = 0;
+
 //        virtual int8_t createRadioApps(const std::string &id) = 0;
 //
 //        virtual int8_t delRadioApps(const std::string &id) = 0;

@@ -15,6 +15,8 @@ std::string inputID(const std::string &message);
 
 void parseInstallationCode(int8_t code);
 
+void parseUninstallationCode(int8_t code);
+
 int main() {
     RadioComputer radioComputer("RC1");
 
@@ -30,12 +32,13 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "2");
+    return !(cmd == "3");
 }
 
 void printMenu() {
     std::cout << "1 - Install URA" << std::endl;
-    std::cout << "2 - Exit" << std::endl;
+    std::cout << "2 - Uninstall URA" << std::endl;
+    std::cout << "3 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -43,6 +46,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     if (cmd == "1") {
         int8_t result = radioComputer.installRadioApps(inputID("Input RAP ID"), inputID("Input URA ID"));
         parseInstallationCode(result);
+    } else if (cmd == "2") {
+        int8_t result = radioComputer.uninstallRadioApps(inputID("Input URA ID"));
+        parseUninstallationCode(result);
     }
 }
 
@@ -78,6 +84,28 @@ void parseInstallationCode(int8_t code) {
 
         case static_cast<int8_t>(Codes::Installation::BAD_FILE): {
             std::cout << "RAP file cannot be opened" << std::endl;
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void parseUninstallationCode(int8_t code) {
+    switch (code) {
+        case static_cast<int8_t>(Codes::Uninstallation::OK): {
+            std::cout << "URA has been uninstalled" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Uninstallation::NO_URA): {
+            std::cout << "There is no installed URA with such ID" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Uninstallation::ACTIVATED): {
+            std::cout << "This URA is activated" << std::endl;
             break;
         }
 

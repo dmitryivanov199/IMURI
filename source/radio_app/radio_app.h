@@ -17,9 +17,9 @@ public:
 
     ~RadioApp();
 
-    std::string getAppId();
+    bool operator==(const RadioApp &rhs) const;
 
-    std::string getAppVersion();
+    std::string getAppId();
 
     RadioAppStatus getAppStatus();
 };

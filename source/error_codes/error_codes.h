@@ -9,6 +9,12 @@ namespace Codes {
         ALREADY_INSTALLED,
         BAD_FILE
     };
+
+    enum class Uninstallation {
+        OK,
+        NO_URA,
+        ACTIVATED
+    };
 }
 
 #endif //IMURI_ERROR_CODES_H

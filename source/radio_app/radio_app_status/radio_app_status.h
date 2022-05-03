@@ -5,7 +5,7 @@ enum class RadioAppStatus {
     INSTALLED,
     INSTANTIATED,
     ACTIVE,
-    DEACTIVE
+    NOT_FOUND
 };
 
 #endif //IMURI_RADIO_APP_STATUS_H
