@@ -14,6 +14,10 @@ RadioComputer::RadioComputer(std::string id) :
     listOfRadioApps.clear();
 }
 
+std::string RadioComputer::getRadioComputerId() {
+    return radioComputerId;
+}
+
 int8_t RadioComputer::installRadioApps(const std::string &packId, const std::string &appId) {
     if (isAppInstalled(appId)) {
         return static_cast<int8_t>(Codes::Installation::ALREADY_INSTALLED);

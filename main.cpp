@@ -25,6 +25,7 @@ void printListOfApps(const std::vector<RadioApp> &appsList);
 
 int main() {
     RadioComputer radioComputer("RC1");
+    std::cout << "Radio computer ID: " << radioComputer.getRadioComputerId() << std::endl;
 
     std::string cmd;
 
