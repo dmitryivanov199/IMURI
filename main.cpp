@@ -130,7 +130,7 @@ void parseUninstallationCode(int8_t code) {
 void parseInstantiationCode(int8_t code) {
     switch (code) {
         case static_cast<int8_t>(Codes::Instantiation::OK): {
-            std::cout << "URA has been instantiated" << std::endl;
+            std::cout << "URA instance has been created" << std::endl;
             break;
         }
 
@@ -145,7 +145,7 @@ void parseInstantiationCode(int8_t code) {
         }
 
         case static_cast<int8_t>(Codes::Instantiation::ALREADY_INSTANTIATED): {
-            std::cout << "URA had already been instantiated" << std::endl;
+            std::cout << "URA instance had already been created" << std::endl;
             break;
         }
 
