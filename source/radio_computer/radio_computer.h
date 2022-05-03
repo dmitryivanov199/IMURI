@@ -33,6 +33,8 @@ public:
 
     int8_t createRadioApps(const std::string &id) override;
 
+    int8_t delRadioApps(const std::string &id) override;
+
 private:
     bool isAppInstalled(const std::string &appId);
 

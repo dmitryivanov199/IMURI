@@ -13,8 +13,8 @@ public:
 
         virtual int8_t createRadioApps(const std::string &id) = 0;
 
-//        virtual int8_t delRadioApps(const std::string &id) = 0;
-//
+        virtual int8_t delRadioApps(const std::string &id) = 0;
+
 //        virtual std::vector<RadioApp> getListOfRadioApps() = 0;
     };
 

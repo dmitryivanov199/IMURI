@@ -22,6 +22,13 @@ namespace Codes {
         ACTIVATED,
         ALREADY_INSTANTIATED
     };
+
+    enum class Deletion {
+        OK,
+        NO_URA,
+        ACTIVATED,
+        ALREADY_DELETED
+    };
 }
 
 #endif //IMURI_ERROR_CODES_H

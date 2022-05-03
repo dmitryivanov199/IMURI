@@ -19,6 +19,8 @@ void parseUninstallationCode(int8_t code);
 
 void parseInstantiationCode(int8_t code);
 
+void parseDeletionCode(int8_t code);
+
 int main() {
     RadioComputer radioComputer("RC1");
 
@@ -34,7 +36,7 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "4");
+    return !(cmd == "5");
 }
 
 void printMenu() {
@@ -42,7 +44,8 @@ void printMenu() {
     std::cout << "1 - Install URA" << std::endl;
     std::cout << "2 - Uninstall URA" << std::endl;
     std::cout << "3 - Instantiate URA" << std::endl;
-    std::cout << "4 - Exit" << std::endl;
+    std::cout << "4 - Delete instance of URA" << std::endl;
+    std::cout << "5 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -56,6 +59,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     } else if (cmd == "3") {
         int8_t result = radioComputer.createRadioApps(inputID("Input URA ID"));
         parseInstantiationCode(result);
+    } else if (cmd == "4") {
+        int8_t result = radioComputer.delRadioApps(inputID("Input URA ID"));
+        parseDeletionCode(result);
     }
 }
 
@@ -140,6 +146,33 @@ void parseInstantiationCode(int8_t code) {
 
         case static_cast<int8_t>(Codes::Instantiation::ALREADY_INSTANTIATED): {
             std::cout << "URA had already been instantiated" << std::endl;
+            break;
+        }
+
+        default:
+            break;
+    }
+}
+
+void parseDeletionCode(int8_t code) {
+    switch (code) {
+        case static_cast<int8_t>(Codes::Deletion::OK): {
+            std::cout << "URA instance has been deleted" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Deletion::NO_URA): {
+            std::cout << "There is no installed URA with such ID" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Deletion::ACTIVATED): {
+            std::cout << "This URA is activated" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Deletion::ALREADY_DELETED): {
+            std::cout << "There is no instance of this URA" << std::endl;
             break;
         }
 

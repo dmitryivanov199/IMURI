@@ -28,7 +28,7 @@ int8_t RadioComputer::installRadioApps(const std::string &packId, const std::str
 
 int8_t RadioComputer::uninstallRadioApps(const std::string &id) {
     if (isAppInstalled(id)) {
-        if (getAppStatusById(id) == RadioAppStatus::ACTIVE) {
+        if (getAppStatusById(id) == RadioAppStatus::ACTIVATED) {
             return static_cast<int8_t>(Codes::Uninstallation::ACTIVATED);
         }
 
@@ -54,7 +54,7 @@ int8_t RadioComputer::createRadioApps(const std::string &id) {
     if (isAppInstalled(id)) {
         RadioAppStatus status = getAppStatusById(id);
 
-        if (status == RadioAppStatus::ACTIVE) {
+        if (status == RadioAppStatus::ACTIVATED) {
             return static_cast<int8_t>(Codes::Instantiation::ACTIVATED);
         }
 
@@ -73,6 +73,31 @@ int8_t RadioComputer::createRadioApps(const std::string &id) {
     }
 
     return static_cast<int8_t>(Codes::Instantiation::NO_URA);
+}
+
+int8_t RadioComputer::delRadioApps(const std::string &id) {
+    if (isAppInstalled(id)) {
+        RadioAppStatus status = getAppStatusById(id);
+
+        if (status == RadioAppStatus::ACTIVATED) {
+            return static_cast<int8_t>(Codes::Deletion::ACTIVATED);
+        }
+
+        if (status == RadioAppStatus::INSTALLED) {
+            return static_cast<int8_t>(Codes::Deletion::ALREADY_DELETED);
+        }
+
+        for (auto &app: listOfRadioApps) {
+            if (app.getAppId() == id) {
+                app.setAppStatus(RadioAppStatus::INSTALLED);
+                break;
+            }
+        }
+
+        return static_cast<int8_t>(Codes::Deletion::OK);
+    }
+
+    return static_cast<int8_t>(Codes::Deletion::NO_URA);
 }
 
 bool RadioComputer::isAppInstalled(const std::string &appId) {

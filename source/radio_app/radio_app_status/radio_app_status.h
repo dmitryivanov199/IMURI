@@ -4,7 +4,7 @@
 enum class RadioAppStatus {
     INSTALLED,
     INSTANTIATED,
-    ACTIVE,
+    ACTIVATED,
     NOT_FOUND
 };
 
