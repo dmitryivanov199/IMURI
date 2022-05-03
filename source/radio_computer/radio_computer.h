@@ -35,6 +35,8 @@ public:
 
     int8_t delRadioApps(const std::string &id) override;
 
+    std::vector<RadioApp> getListOfRadioApps() override;
+
 private:
     bool isAppInstalled(const std::string &appId);
 

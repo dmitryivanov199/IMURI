@@ -21,6 +21,8 @@ void parseInstantiationCode(int8_t code);
 
 void parseDeletionCode(int8_t code);
 
+void printListOfApps(const std::vector<RadioApp> &appsList);
+
 int main() {
     RadioComputer radioComputer("RC1");
 
@@ -36,16 +38,17 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "5");
+    return !(cmd == "6");
 }
 
 void printMenu() {
     std::cout << std::endl << "--------------------" << std::endl;
     std::cout << "1 - Install URA" << std::endl;
     std::cout << "2 - Uninstall URA" << std::endl;
-    std::cout << "3 - Instantiate URA" << std::endl;
+    std::cout << "3 - Create instance of URA" << std::endl;
     std::cout << "4 - Delete instance of URA" << std::endl;
-    std::cout << "5 - Exit" << std::endl;
+    std::cout << "5 - Get URAs list" << std::endl;
+    std::cout << "6 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -62,6 +65,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     } else if (cmd == "4") {
         int8_t result = radioComputer.delRadioApps(inputID("Input URA ID"));
         parseDeletionCode(result);
+    } else if (cmd == "5") {
+        std::vector<RadioApp> appsList = radioComputer.getListOfRadioApps();
+        printListOfApps(appsList);
     }
 }
 
@@ -178,5 +184,41 @@ void parseDeletionCode(int8_t code) {
 
         default:
             break;
+    }
+}
+
+void printListOfApps(const std::vector<RadioApp> &appsList) {
+    if (appsList.empty()) {
+        std::cout << "List of apps is empty" << std::endl;
+        return;
+    }
+
+    std::cout << "----- List of apps -----" << std::endl << std::endl;
+
+    for (auto app: appsList) {
+        std::cout << "URA ID: " << app.getAppId() << std::endl;
+        std::cout << "URA version: " << app.getAppVersion() << std::endl;
+
+        switch (static_cast<int8_t>(app.getAppStatus())) {
+            case static_cast<int8_t>(RadioAppStatus::INSTALLED): {
+                std::cout << "Status: installed" << std::endl;
+                break;
+            }
+
+            case static_cast<int8_t>(RadioAppStatus::INSTANTIATED): {
+                std::cout << "Status: instance created" << std::endl;
+                break;
+            }
+
+            case static_cast<int8_t>(RadioAppStatus::ACTIVATED): {
+                std::cout << "Status: activated" << std::endl;
+                break;
+            }
+
+            default:
+                break;
+        }
+
+        std::cout << std::endl;
     }
 }

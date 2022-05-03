@@ -21,6 +21,8 @@ public:
 
     std::string getAppId();
 
+    std::string getAppVersion();
+
     RadioAppStatus getAppStatus();
 
     void setAppStatus(const RadioAppStatus &status);

@@ -100,6 +100,10 @@ int8_t RadioComputer::delRadioApps(const std::string &id) {
     return static_cast<int8_t>(Codes::Deletion::NO_URA);
 }
 
+std::vector<RadioApp> RadioComputer::getListOfRadioApps() {
+    return listOfRadioApps;
+}
+
 bool RadioComputer::isAppInstalled(const std::string &appId) {
     for (auto app: listOfRadioApps) {
         if (app.getAppId() == appId) {
