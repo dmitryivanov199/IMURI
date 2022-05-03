@@ -14,8 +14,8 @@
 class RadioComputer : public IMURI::IAdministrativeServices, public IMURI::IAccessControlServices {
 private:
     std::string radioComputerId;
-    const char *packPath = "/home/apt-15/Docs/rrs/rap/";
-    const char *appPath = "/home/apt-15/Docs/rrs/ura/";
+    const char *packPath = "/home/dmitry/projects/RAP/rap";
+    const char *appPath = "/home/dmitry/projects/IMURI/ura";
 
     std::vector<RadioApp> listOfRadioApps;
 
