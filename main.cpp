@@ -28,6 +28,8 @@ void parseActivationCode(int8_t code);
 
 void parseDeactivationCode(bool code);
 
+void stopAllApps(RadioComputer &radioComputer);
+
 void clearAppsDir(const char *path);
 
 int main() {
@@ -42,6 +44,7 @@ int main() {
         processCommand(cmd, radioComputer);
     }
 
+    stopAllApps(radioComputer);
     clearAppsDir(radioComputer.getAppPath());
     return 0;
 }
@@ -65,26 +68,26 @@ void printMenu() {
 
 void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     if (cmd == "1") {
-        int8_t result = radioComputer.installRadioApps(inputID("Input RAP ID"), inputID("Input URA ID"));
-        parseInstallationCode(result);
+        int8_t code = radioComputer.installRadioApps(inputID("Input RAP ID"), inputID("Input URA ID"));
+        parseInstallationCode(code);
     } else if (cmd == "2") {
-        int8_t result = radioComputer.uninstallRadioApps(inputID("Input URA ID"));
-        parseUninstallationCode(result);
+        int8_t code = radioComputer.uninstallRadioApps(inputID("Input URA ID"));
+        parseUninstallationCode(code);
     } else if (cmd == "3") {
-        int8_t result = radioComputer.createRadioApps(inputID("Input URA ID"));
-        parseInstantiationCode(result);
+        int8_t code = radioComputer.createRadioApps(inputID("Input URA ID"));
+        parseInstantiationCode(code);
     } else if (cmd == "4") {
-        int8_t result = radioComputer.delRadioApps(inputID("Input URA ID"));
-        parseDeletionCode(result);
+        int8_t code = radioComputer.delRadioApps(inputID("Input URA ID"));
+        parseDeletionCode(code);
     } else if (cmd == "5") {
         std::vector<RadioApp> appsList = radioComputer.getListOfRadioApps();
         printListOfApps(appsList);
     } else if (cmd == "6") {
-        int8_t result = radioComputer.activateRadioApps(inputID("Input URA ID"));
-        parseActivationCode(result);
+        int8_t code = radioComputer.activateRadioApps(inputID("Input URA ID"));
+        parseActivationCode(code);
     } else if (cmd == "7") {
-        bool result = radioComputer.deactivateRadioApps(inputID("Input URA ID"));
-        parseDeactivationCode(result);
+        bool code = radioComputer.deactivateRadioApps(inputID("Input URA ID"));
+        parseDeactivationCode(code);
     }
 }
 
@@ -272,6 +275,17 @@ void parseDeactivationCode(bool code) {
         std::cout << "URA has been deactivated" << std::endl;
     } else {
         std::cout << "Error in URA deactivation" << std::endl;
+    }
+}
+
+void stopAllApps(RadioComputer &radioComputer) {
+    std::vector<RadioApp> apps = radioComputer.getListOfRadioApps();
+
+    for (auto app: apps) {
+        if (app.getAppStatus() == RadioAppStatus::ACTIVATED) {
+            bool code = radioComputer.deactivateRadioApps(app.getAppId());
+            parseDeactivationCode(code);
+        }
     }
 }
 
