@@ -13,6 +13,20 @@
 RadioComputer::RadioComputer(std::string id) :
         radioComputerId{std::move(id)} {
     listOfRadioApps.clear();
+
+    char cmd[100];
+    strcpy(cmd, "\0");
+    strcat(cmd, "mkdir ");
+    strcat(cmd, appPath);
+    system(cmd);
+}
+
+RadioComputer::~RadioComputer() {
+    char cmd[100];
+    strcpy(cmd, "\0");
+    strcat(cmd, "rmdir ");
+    strcat(cmd, appPath);
+    system(cmd);
 }
 
 std::string RadioComputer::getRadioComputerId() {

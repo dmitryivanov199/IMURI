@@ -25,7 +25,7 @@ private:
 public:
     explicit RadioComputer(std::string id);
 
-    ~RadioComputer() = default;
+    ~RadioComputer();
 
     std::string getRadioComputerId();
 
