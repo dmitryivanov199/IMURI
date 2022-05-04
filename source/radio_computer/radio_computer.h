@@ -41,6 +41,8 @@ public:
 
     int8_t activateRadioApps(const std::string &id) override;
 
+    bool deactivateRadioApps(const std::string &id) override;
+
 private:
     bool isAppInstalled(const std::string &appId);
 

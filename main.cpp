@@ -25,6 +25,8 @@ void printListOfApps(const std::vector<RadioApp> &appsList);
 
 void parseActivationCode(int8_t code);
 
+void parseDeactivationCode(bool code);
+
 int main() {
     RadioComputer radioComputer("RC1");
     std::cout << "Radio computer ID: " << radioComputer.getRadioComputerId() << std::endl;
@@ -41,7 +43,7 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "7");
+    return !(cmd == "8");
 }
 
 void printMenu() {
@@ -52,7 +54,8 @@ void printMenu() {
     std::cout << "4 - Delete instance of URA" << std::endl;
     std::cout << "5 - Get URAs list" << std::endl;
     std::cout << "6 - Activate URA" << std::endl;
-    std::cout << "7 - Exit" << std::endl;
+    std::cout << "7 - Deactivate URA" << std::endl;
+    std::cout << "8 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -75,6 +78,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     } else if (cmd == "6") {
         int8_t result = radioComputer.activateRadioApps(inputID("Input URA ID"));
         parseActivationCode(result);
+    } else if (cmd == "7") {
+        bool result = radioComputer.deactivateRadioApps(inputID("Input URA ID"));
+        parseDeactivationCode(result);
     }
 }
 
@@ -254,5 +260,13 @@ void parseActivationCode(int8_t code) {
 
         default:
             break;
+    }
+}
+
+void parseDeactivationCode(bool code) {
+    if (code) {
+        std::cout << "URA has been deactivated" << std::endl;
+    } else {
+        std::cout << "Error in URA deactivation" << std::endl;
     }
 }

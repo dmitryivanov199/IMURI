@@ -142,6 +142,39 @@ int8_t RadioComputer::activateRadioApps(const std::string &id) {
     return static_cast<int8_t>(Codes::Activation::NO_URA);
 }
 
+bool RadioComputer::deactivateRadioApps(const std::string &id) {
+    if (isAppInstalled(id)) {
+        RadioAppStatus status = getAppStatusById(id);
+
+        if (status == RadioAppStatus::ACTIVATED) {
+            for (auto &app: listOfRadioApps) {
+                if (app.getAppId() == id) {
+                    char cmd[100];
+
+                    strcpy(cmd, "\0");
+                    strcat(cmd, "kill ");
+                    strcat(cmd, app.getReceiverPid().c_str());
+                    system(cmd);
+
+                    strcpy(cmd, "\0");
+                    strcat(cmd, "kill ");
+                    strcat(cmd, app.getTransmitterPid().c_str());
+                    system(cmd);
+
+                    app.setAppStatus(RadioAppStatus::INSTALLED);
+                    break;
+                }
+            }
+
+            return true;
+        }
+
+        return false;
+    }
+
+    return false;
+}
+
 bool RadioComputer::isAppInstalled(const std::string &appId) {
     for (auto app: listOfRadioApps) {
         if (app.getAppId() == appId) {

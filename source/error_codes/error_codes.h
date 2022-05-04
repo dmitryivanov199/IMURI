@@ -30,7 +30,7 @@ namespace Codes {
         ALREADY_DELETED
     };
 
-    enum class Activation{
+    enum class Activation {
         OK,
         NO_URA,
         ALREADY_ACTIVATED,

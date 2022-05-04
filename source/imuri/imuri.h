@@ -22,7 +22,7 @@ public:
     public:
         virtual int8_t activateRadioApps(const std::string &id) = 0;
 
-//        virtual bool deactivateRadioApps(const std::string &id) = 0;
+        virtual bool deactivateRadioApps(const std::string &id) = 0;
     };
 };
 
