@@ -39,6 +39,8 @@ public:
 
     std::vector<RadioApp> getListOfRadioApps() override;
 
+    int8_t activateRadioApps(const std::string &id) override;
+
 private:
     bool isAppInstalled(const std::string &appId);
 
@@ -77,6 +79,10 @@ private:
     RadioAppStatus getAppStatusById(const std::string &id);
 
     RadioApp getAppById(const std::string &id);
+
+    void runAppPart(const std::string &id, const char *appPart);
+
+    static std::string getUraPartPid();
 };
 
 #endif //IMURI_RADIO_COMPUTER_H

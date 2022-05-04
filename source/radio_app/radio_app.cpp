@@ -31,6 +31,22 @@ RadioAppStatus RadioApp::getAppStatus() {
     return radioAppStatus;
 }
 
+std::string RadioApp::getReceiverPid() {
+    return receiverPid;
+}
+
+std::string RadioApp::getTransmitterPid() {
+    return transmitterPid;
+}
+
 void RadioApp::setAppStatus(const RadioAppStatus &status) {
     radioAppStatus = status;
+}
+
+void RadioApp::setReceiverPid(const std::string &pid) {
+    receiverPid = pid;
+}
+
+void RadioApp::setTransmitterPid(const std::string &pid) {
+    transmitterPid = pid;
 }

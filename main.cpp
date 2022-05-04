@@ -23,6 +23,8 @@ void parseDeletionCode(int8_t code);
 
 void printListOfApps(const std::vector<RadioApp> &appsList);
 
+void parseActivationCode(int8_t code);
+
 int main() {
     RadioComputer radioComputer("RC1");
     std::cout << "Radio computer ID: " << radioComputer.getRadioComputerId() << std::endl;
@@ -39,7 +41,7 @@ int main() {
 }
 
 bool isRun(const std::string &cmd) {
-    return !(cmd == "6");
+    return !(cmd == "7");
 }
 
 void printMenu() {
@@ -49,7 +51,8 @@ void printMenu() {
     std::cout << "3 - Create instance of URA" << std::endl;
     std::cout << "4 - Delete instance of URA" << std::endl;
     std::cout << "5 - Get URAs list" << std::endl;
-    std::cout << "6 - Exit" << std::endl;
+    std::cout << "6 - Activate URA" << std::endl;
+    std::cout << "7 - Exit" << std::endl;
     std::cout << "> ";
 }
 
@@ -69,6 +72,9 @@ void processCommand(const std::string &cmd, RadioComputer &radioComputer) {
     } else if (cmd == "5") {
         std::vector<RadioApp> appsList = radioComputer.getListOfRadioApps();
         printListOfApps(appsList);
+    } else if (cmd == "6") {
+        int8_t result = radioComputer.activateRadioApps(inputID("Input URA ID"));
+        parseActivationCode(result);
     }
 }
 
@@ -221,5 +227,32 @@ void printListOfApps(const std::vector<RadioApp> &appsList) {
         }
 
         std::cout << std::endl;
+    }
+}
+
+void parseActivationCode(int8_t code) {
+    switch (code) {
+        case static_cast<int8_t>(Codes::Activation::OK): {
+            std::cout << "URA has been activated" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Activation::NO_URA): {
+            std::cout << "There is no installed URA with such ID" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Activation::ALREADY_ACTIVATED): {
+            std::cout << "This URA had already been activated" << std::endl;
+            break;
+        }
+
+        case static_cast<int8_t>(Codes::Activation::NOT_INSTANTIATED): {
+            std::cout << "The creation of instance for this URA hadn't been made" << std::endl;
+            break;
+        }
+
+        default:
+            break;
     }
 }

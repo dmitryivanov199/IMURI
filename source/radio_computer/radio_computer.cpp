@@ -3,6 +3,7 @@
 #include <cstring>
 #include <fstream>
 #include <iostream>
+#include <unistd.h>
 #include <utility>
 
 #include "../error_codes/error_codes.h"
@@ -106,6 +107,39 @@ int8_t RadioComputer::delRadioApps(const std::string &id) {
 
 std::vector<RadioApp> RadioComputer::getListOfRadioApps() {
     return listOfRadioApps;
+}
+
+int8_t RadioComputer::activateRadioApps(const std::string &id) {
+    if (isAppInstalled(id)) {
+        RadioAppStatus status = getAppStatusById(id);
+
+        if (status == RadioAppStatus::ACTIVATED) {
+            return static_cast<int8_t>(Codes::Activation::ALREADY_ACTIVATED);
+        }
+
+        if (status == RadioAppStatus::INSTALLED) {
+            return static_cast<int8_t>(Codes::Activation::NOT_INSTANTIATED);
+        }
+
+        for (auto &app: listOfRadioApps) {
+            if (app.getAppId() == id) {
+                runAppPart(id, "/receiver/receiver &");
+                sleep(2);
+                app.setReceiverPid(getUraPartPid());
+
+                runAppPart(id, "/transmitter/transmitter 4455 &");
+                sleep(2);
+                app.setTransmitterPid(getUraPartPid());
+
+                app.setAppStatus(RadioAppStatus::ACTIVATED);
+                break;
+            }
+        }
+
+        return static_cast<int8_t>(Codes::Activation::OK);
+    }
+
+    return static_cast<int8_t>(Codes::Activation::NO_URA);
 }
 
 bool RadioComputer::isAppInstalled(const std::string &appId) {
@@ -403,4 +437,35 @@ RadioApp RadioComputer::getAppById(const std::string &id) {
     }
 
     return RadioApp{"", "", RadioAppStatus::NOT_FOUND};
+}
+
+void RadioComputer::runAppPart(const std::string &id, const char *appPart) {
+    char cmd[100];
+
+    strcpy(cmd, "\0");
+    strcat(cmd, appPath);
+    strcat(cmd, "/");
+    strcat(cmd, id.c_str());
+    strcat(cmd, appPart);
+    system(cmd);
+}
+
+std::string RadioComputer::getUraPartPid() {
+    std::ifstream pidFile("./Pids_Storage.txt", std::ios::in);
+
+    std::string pid;
+    char symbol;
+
+    while (!pidFile.eof()) {
+        symbol = static_cast<char>(pidFile.get());
+
+        if (symbol >= '0' && symbol <= '9') {
+            pid += symbol;
+        } else {
+            break;
+        }
+    }
+
+    pidFile.close();
+    return pid;
 }
