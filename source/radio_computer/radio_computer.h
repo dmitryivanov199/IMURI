@@ -29,6 +29,8 @@ public:
 
     std::string getRadioComputerId();
 
+    const char *getAppPath();
+
     int8_t installRadioApps(const std::string &packId, const std::string &appId) override;
 
     int8_t uninstallRadioApps(const std::string &id) override;

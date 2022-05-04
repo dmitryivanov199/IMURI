@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cstdint>
+#include <cstring>
 #include <string>
 
 #include "source/error_codes/error_codes.h"
@@ -27,6 +28,8 @@ void parseActivationCode(int8_t code);
 
 void parseDeactivationCode(bool code);
 
+void clearAppsDir(const char *path);
+
 int main() {
     RadioComputer radioComputer("RC1");
     std::cout << "Radio computer ID: " << radioComputer.getRadioComputerId() << std::endl;
@@ -39,6 +42,7 @@ int main() {
         processCommand(cmd, radioComputer);
     }
 
+    clearAppsDir(radioComputer.getAppPath());
     return 0;
 }
 
@@ -269,4 +273,14 @@ void parseDeactivationCode(bool code) {
     } else {
         std::cout << "Error in URA deactivation" << std::endl;
     }
+}
+
+void clearAppsDir(const char *path) {
+    char cmd[100];
+
+    strcpy(cmd, "\0");
+    strcat(cmd, "rm -rf ");
+    strcat(cmd, path);
+    strcat(cmd, "/*");
+    system(cmd);
 }

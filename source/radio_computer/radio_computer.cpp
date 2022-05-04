@@ -19,6 +19,10 @@ std::string RadioComputer::getRadioComputerId() {
     return radioComputerId;
 }
 
+const char * RadioComputer::getAppPath() {
+    return appPath;
+}
+
 int8_t RadioComputer::installRadioApps(const std::string &packId, const std::string &appId) {
     if (isAppInstalled(appId)) {
         return static_cast<int8_t>(Codes::Installation::ALREADY_INSTALLED);
