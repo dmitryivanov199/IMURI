@@ -18,7 +18,10 @@ RadioComputer::RadioComputer(std::string id) :
     strcpy(cmd, "\0");
     strcat(cmd, "mkdir ");
     strcat(cmd, appPath);
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 }
 
 RadioComputer::~RadioComputer() {
@@ -26,7 +29,10 @@ RadioComputer::~RadioComputer() {
     strcpy(cmd, "\0");
     strcat(cmd, "rmdir ");
     strcat(cmd, appPath);
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command must be not nullptr" << std::endl;
+    }
 }
 
 std::string RadioComputer::getRadioComputerId() {
@@ -61,7 +67,10 @@ int8_t RadioComputer::uninstallRadioApps(const std::string &id) {
         strcat(cmd, appPath);
         strcat(cmd, "/");
         strcat(cmd, id.c_str());
-        system(cmd);
+
+        if (system(cmd) != 0) {
+            std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+        }
 
         RadioApp appToRemove = getAppById(id);
         listOfRadioApps.erase(std::remove(listOfRadioApps.begin(), listOfRadioApps.end(), appToRemove),
@@ -172,12 +181,18 @@ bool RadioComputer::deactivateRadioApps(const std::string &id) {
                     strcpy(cmd, "\0");
                     strcat(cmd, "kill ");
                     strcat(cmd, app.getReceiverPid().c_str());
-                    system(cmd);
+
+                    if (system(cmd) != 0) {
+                        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+                    }
 
                     strcpy(cmd, "\0");
                     strcat(cmd, "kill ");
                     strcat(cmd, app.getTransmitterPid().c_str());
-                    system(cmd);
+
+                    if (system(cmd) != 0) {
+                        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+                    }
 
                     app.setAppStatus(RadioAppStatus::INSTALLED);
                     break;
@@ -313,7 +328,9 @@ int8_t RadioComputer::extractUra(std::ifstream &pack, const std::string &appId) 
                 strcat(cmd, "transmitter/transmitter");
             }
 
-            system(cmd);
+            if (system(cmd) != 0) {
+                std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+            }
         }
 
         pack.close();
@@ -430,11 +447,17 @@ void RadioComputer::makeAppDirs(const std::string &appId) {
     strcat(cmd, appPath);
     strcat(cmd, "/");
     strcat(cmd, appId.c_str());
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 
     strcat(cmd, "/");
     strcat(cmd, "receiver");
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 
     strcpy(cmd, "\0");
     strcat(cmd, "mkdir ");
@@ -443,7 +466,10 @@ void RadioComputer::makeAppDirs(const std::string &appId) {
     strcat(cmd, appId.c_str());
     strcat(cmd, "/");
     strcat(cmd, "transmitter");
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 }
 
 void RadioComputer::putUraConfigs(const std::string &appId) {
@@ -457,7 +483,10 @@ void RadioComputer::putUraConfigs(const std::string &appId) {
     strcat(cmd, "/");
     strcat(cmd, appId.c_str());
     strcat(cmd, "/receiver");
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 
     strcpy(cmd, "\0");
     strcat(cmd, "cp -f ");
@@ -467,7 +496,10 @@ void RadioComputer::putUraConfigs(const std::string &appId) {
     strcat(cmd, "/");
     strcat(cmd, appId.c_str());
     strcat(cmd, "/transmitter");
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 }
 
 RadioAppStatus RadioComputer::getAppStatusById(const std::string &id) {
@@ -498,7 +530,10 @@ void RadioComputer::runAppPart(const std::string &id, const char *appPart) {
     strcat(cmd, "/");
     strcat(cmd, id.c_str());
     strcat(cmd, appPart);
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 }
 
 std::string RadioComputer::getUraPartPid() {

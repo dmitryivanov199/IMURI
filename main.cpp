@@ -296,5 +296,8 @@ void clearAppsDir(const char *path) {
     strcat(cmd, "rm -rf ");
     strcat(cmd, path);
     strcat(cmd, "/*");
-    system(cmd);
+
+    if (system(cmd) != 0) {
+        std::cout << "Command " << cmd << " must be not nullptr" << std::endl;
+    }
 }
